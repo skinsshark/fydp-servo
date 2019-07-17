@@ -2,11 +2,13 @@ import sys
 import math
 from adafruit_servokit import ServoKit
 
-# camera view values
+# UPDATE: camera view values
 image_width = 3000
+image_height = 2000
 camera_position = image_width / 2;
 
-def determine_angle(raw_x, y):
+def determine_angle(raw_x, raw_y):
+    y = image_height - raw_y
     if raw_x <= camera_position:
         x = camera_position - raw_x
         angle = 180 - math.degrees(math.atan(y/x))
@@ -19,8 +21,6 @@ def move_servo(angle):
     kit.servo[0].angle = angle
 
 if __name__ == '__main__':
-    # through command line
-    # python script.py <x_value> <y_value>
     if len(sys.argv) == 3:
         kit = ServoKit(channels=8) #init
         x = int(sys.argv[1])
@@ -31,4 +31,4 @@ if __name__ == '__main__':
 
     else:
         print('needs (x,y) coordinates')
-        print('> python script.py <x_value> <y_value>')
+        print('> python3 script.py <x_value> <y_value>')
